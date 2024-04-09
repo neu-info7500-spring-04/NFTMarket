@@ -1,6 +1,6 @@
-import {useReadContract} from "wagmi";
+import { useReadContract } from "wagmi";
 import abi from "./ContractABI.json";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 export function NFTList({ userAddress }: { userAddress: `0x${string}` }) {
 	const contractAddress = "0x8Ca68D231555c79E34dEfc769a8b9529312C5711";
@@ -34,23 +34,60 @@ export function NFTList({ userAddress }: { userAddress: `0x${string}` }) {
 	});
 
 	useEffect(() => {
-		const fetchMetadata = async () => {
-			if (tokenURIs) {
+		const fetchNFTs = async () => {
+			if (balance && !balanceLoading && !balanceError) {
+				const tokenIds = [];
+				for (let i = 0; i < balance.toNumber(); i++) {
+					const { data: tokenId } = useReadContract({
+						address: contractAddress,
+						abi,
+						functionName: "tokenOfOwnerByIndex",
+						args: [userAddress, i],
+					});
+					tokenIds.push(tokenId);
+				}
+
+				const tokenURIs = await Promise.all(
+					tokenIds.map(async (tokenId) => {
+						const { data: tokenURI } = useReadContract({
+							address: contractAddress,
+							abi,
+							functionName: "tokenURI",
+							args: [tokenId],
+						});
+						return tokenURI;
+					}),
+				);
+
 				const metadata = await Promise.all(
 					tokenURIs.map(async (uri) => {
 						const response = await fetch(uri);
 						return await response.json();
 					}),
 				);
+
 				setNftMetadata(metadata);
 			}
 		};
 
-		fetchMetadata();
-	}, [tokenURIs]);
+		fetchNFTs();
+	}, [balance, balanceLoading, balanceError, userAddress]);
 
-	if (balanceLoading || tokenURIsLoading) return <div>Loading...</div>;
-	if (balanceError || tokenURIsError) return <div>Error fetching NFTs</div>;
+	if (balanceLoading || tokenURIsLoading) {
+		console.log("Loading...");
+		console.log("Balance loading:", balanceLoading);
+		console.log("Token URIs loading:", tokenURIsLoading);
+		return <div>Loading...</div>;
+	}
+
+	if (balanceError || tokenURIsError) {
+		console.error("Error fetching NFTs");
+		console.error("Balance error:", balanceError);
+		console.error("Token URIs error:", tokenURIsError);
+		return <div>Error fetching NFTs</div>;
+	}
+
+	console.log("NFT metadata:", nftMetadata);
 
 	return (
 		<div>
