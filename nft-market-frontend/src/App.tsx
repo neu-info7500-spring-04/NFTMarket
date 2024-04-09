@@ -1,50 +1,54 @@
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
-import {MintNFT} from './MintNFT'
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { MintNFT } from "./MintNFT";
+import { NFTList } from "./NFTList";
 
 function App() {
-  const account = useAccount()
-  const { connectors, connect, status, error } = useConnect()
-  const { disconnect } = useDisconnect()
+	const account = useAccount();
+	const { connectors, connect, status, error } = useConnect();
+	const { disconnect } = useDisconnect();
 
-  return (
-    <>
-      <div>
-        <h2>Account</h2>
+	return (
+		<>
+			<div>
+				<h2>Account</h2>
 
-        <div>
-          status: {account.status}
-          <br />
-          addresses: {JSON.stringify(account.addresses)}
-          <br />
-          chainId: {account.chainId}
-        </div>
+				<div>
+					status: {account.status}
+					<br />
+					addresses: {JSON.stringify(account.addresses)}
+					<br />
+					chainId: {account.chainId}
+				</div>
 
-        {account.status === 'connected' && (
-          <button type="button" onClick={() => disconnect()}>
-            Disconnect
-          </button>
-        )}
-      </div>
+				{account.status === "connected" && (
+					<button type="button" onClick={() => disconnect()}>
+						Disconnect
+					</button>
+				)}
+			</div>
 
-      <div>
-        <h2>Connect</h2>
-        {account.status !== 'connected' && connectors.map((connector) => (
-          <button
-            key={connector.uid}
-            onClick={() => connect({ connector })}
-            type="button"
-          >
-            {connector.name}
-          </button>
-        ))}
-        {/* <div>{status}</div> */}
-        <div>{error?.message}</div>
-      </div>
+			<div>
+				<h2>Connect</h2>
+				{account.status !== "connected" &&
+					connectors.map((connector) => (
+						<button
+							key={connector.uid}
+							onClick={() => connect({ connector })}
+							type="button"
+						>
+							{connector.name}
+						</button>
+					))}
+				{/* <div>{status}</div> */}
+				<div>{error?.message}</div>
+			</div>
 
-      {account.status === 'connected' && <MintNFT />}
-
-    </>
-  )
+			{account.status === "connected" && <MintNFT />}
+			{account.status === "connected" && (
+				<NFTList userAddress={account.addresses} />
+			)}
+		</>
+	);
 }
 
-export default App
+export default App;
