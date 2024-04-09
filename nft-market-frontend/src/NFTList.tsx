@@ -30,7 +30,7 @@ export function NFTList({ userAddress }: { userAddress: `0x${string}` }) {
 		address: contractAddress,
 		abi,
 		functionName: "tokenURI",
-		args: tokenIds.map((id) => [id]),
+		args: tokenIds.map((id) => [id])
 	});
 
 	useEffect(() => {
