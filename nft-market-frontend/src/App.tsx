@@ -1,4 +1,5 @@
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import {MintNFT} from './MintNFT'
 
 function App() {
   const account = useAccount()
@@ -27,7 +28,7 @@ function App() {
 
       <div>
         <h2>Connect</h2>
-        {connectors.map((connector) => (
+        {account.status !== 'connected' && connectors.map((connector) => (
           <button
             key={connector.uid}
             onClick={() => connect({ connector })}
@@ -36,9 +37,12 @@ function App() {
             {connector.name}
           </button>
         ))}
-        <div>{status}</div>
+        {/* <div>{status}</div> */}
         <div>{error?.message}</div>
       </div>
+
+      {account.status === 'connected' && <MintNFT />}
+
     </>
   )
 }
