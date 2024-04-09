@@ -1,4 +1,5 @@
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import {MintNFT} from './MintNFT'
 
 function App() {
   const account = useAccount()
@@ -39,6 +40,8 @@ function App() {
         <div>{status}</div>
         <div>{error?.message}</div>
       </div>
+
+      {account.status === 'connected' && <MintNFT />}
     </>
   )
 }
