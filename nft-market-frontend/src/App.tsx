@@ -43,8 +43,7 @@ function App() {
         <div>{error?.message}</div>
       </div>
 
-      {account.status === 'connected' && <MintNFT contractAddress={CONTRACT_ADDRESS}/>}
-      {account.status === 'connected' && <DisplayNFTs address={account.address} contractAddress={CONTRACT_ADDRESS}/>}
+      {account.status === 'connected' && <MintNFT address={account.address} contractAddress={CONTRACT_ADDRESS}/>}
 
     </>
   )

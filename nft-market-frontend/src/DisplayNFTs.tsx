@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 interface Props {
     address: `0x${string}`;
     contractAddress: `0x${string}`;
+    isConfirmed: boolean;
 }
 
 interface Data {
@@ -21,12 +22,12 @@ interface NFT {
     tokenUri: string;
 }
 
-export function DisplayNFTs({ address, contractAddress }: Props) { // 從props接收address
+export function DisplayNFTs({ address, contractAddress, isConfirmed }: Props) { // 從props接收address
     const options = {method: 'GET', headers: {accept: 'application/json'}};
     const ALCHEMY_API = import.meta.env.VITE_ALCHEMY_API;
     const [nfts, setNfts] = useState<NFT[]>([]);
 
-    useEffect(() => { fetchNFTs() }, [ address ]);
+    useEffect(() => { fetchNFTs() }, [ address, isConfirmed ]);
 
     function fetchNFTs() {
         fetch(`https://eth-sepolia.g.alchemy.com/nft/v3/${ALCHEMY_API}/getNFTsForOwner?owner=${address}&contractAddresses[]=${contractAddress}&withMetadata=true&pageSize=100`, options)
