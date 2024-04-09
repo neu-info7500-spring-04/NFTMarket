@@ -1,7 +1,9 @@
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import {MintNFT} from './MintNFT'
+import { DisplayNFTs } from './DisplayNFTs';
 
 function App() {
+  const CONTRACT_ADDRESS ="0x8Ca68D231555c79E34dEfc769a8b9529312C5711";
   const account = useAccount()
   const { connectors, connect, status, error } = useConnect()
   const { disconnect } = useDisconnect()
@@ -37,11 +39,12 @@ function App() {
             {connector.name}
           </button>
         ))}
-        {/* <div>{status}</div> */}
+        <div>{status}</div>
         <div>{error?.message}</div>
       </div>
 
-      {account.status === 'connected' && <MintNFT />}
+      {account.status === 'connected' && <MintNFT contractAddress={CONTRACT_ADDRESS}/>}
+      {account.status === 'connected' && <DisplayNFTs address={account.address} contractAddress={CONTRACT_ADDRESS}/>}
 
     </>
   )

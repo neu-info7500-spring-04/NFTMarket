@@ -1,10 +1,12 @@
 import abi from './ContractABI.json';
 import * as React from 'react'
 import { type BaseError, useWaitForTransactionReceipt, useWriteContract } from 'wagmi' 
- 
-export function MintNFT() {
+interface Props {
+  contractAddress: `0x${string}`;
+}
+
+export function MintNFT( {contractAddress}:Props ) {
   const { data: hash, error, isPending, writeContract } = useWriteContract() 
-  const contractAddress ="0x8Ca68D231555c79E34dEfc769a8b9529312C5711";
 
   async function submit(e: React.FormEvent<HTMLFormElement>) { 
     e.preventDefault() 
