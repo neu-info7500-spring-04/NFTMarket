@@ -11,8 +11,6 @@ export function MintNFT() {
     const formData = new FormData(e.target as HTMLFormElement) 
     const tokenURI = formData.get('tokenURI') as string 
     
-    console.log(abi)
-    
     writeContract({ 
       address: contractAddress, 
       abi, 
