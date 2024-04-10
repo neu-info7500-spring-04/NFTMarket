@@ -48,13 +48,20 @@ export function DisplayNFTs({ address, contractAddress, isConfirmed }: Props) { 
     return (
         <div>
         <h2>My NFTs</h2>
+        <div className='nft-gallery'>
         {nfts.length > 0 ? (
             nfts.map((nft) => (
-            <img key={nft.tokenId} src={nft.tokenUri} alt={`NFT ${nft.tokenId}`} style={{ width: 100, height: 100 }} />
+            <div className="nft">
+                <div className='nft-img'>
+                    <img key={nft.tokenId} src={nft.tokenUri}/>
+                </div>
+                <div className='nft-name'>{`NFT ${nft.tokenId}`}</div>
+            </div>
             ))
         ) : (
             <p>No NFTs found</p>
         )}
+        </div>
         </div>
     );
 }
