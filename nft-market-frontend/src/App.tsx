@@ -25,7 +25,7 @@ function App() {
           </div>
 
           {account.status === 'connected' && (
-            <button type="button" onClick={() => disconnect()}>
+            <button className="disconnect" type="button" onClick={() => disconnect()}>
               Disconnect
             </button>
           )}
