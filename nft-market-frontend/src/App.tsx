@@ -5,7 +5,7 @@ import './index.css';
 function App() {
   const CONTRACT_ADDRESS = "0x8Ca68D231555c79E34dEfc769a8b9529312C5711";
   const account = useAccount()
-  const { connectors, connect, status, error } = useConnect()
+  const { connectors, connect, error } = useConnect()
   const { disconnect } = useDisconnect()
 
   return (
