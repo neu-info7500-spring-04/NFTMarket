@@ -19,3 +19,110 @@
     color: #181818;
   }
 }
+
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  z-index: 1000;
+  background-color: white;
+}
+
+.caption {
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.main {
+  padding: 100px 200px 80px 200px;
+}
+
+button {
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid grey;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  min-width: 100px;
+}
+
+.mint-form {
+}
+
+.mint-input {
+  min-width: 300px;
+  height: 32.5px;
+  border-radius: 5px;
+  border: 1px solid grey;
+  margin-right: 20px;
+}
+
+.connector {
+  margin-right: 30px;
+}
+
+button:hover {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.account {
+  min-height: 200px;
+  border-radius: 10px;
+  border: 1px solid black;
+  padding: 20px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.account-info {
+  font-size: 20px;
+  font-weight: 500;
+  color: rgb(84, 84, 84);
+}
+
+h2 {
+  background-color: rgba(18, 18, 18, 0.04);
+  border: 0px;
+  border-radius: 10px;
+  width: fit-content;
+  padding: 10px 20px;
+}
+
+.nft-gallery {
+  display: flex;
+  gap: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: white;
+
+}
+
+.nft {
+  border: 0px;
+  width: 200px;
+  height: 300px;
+}
+
+.nft-img {
+  width: 200px;
+  height: 200px;
+
+  >img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.nft-name {
+  height: 80px;
+  padding: 10px;
+  background-color: rgba(18, 18, 18, 0.04);
+}

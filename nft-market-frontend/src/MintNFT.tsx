@@ -31,9 +31,10 @@ export function MintNFT( {address, contractAddress}:Props ) {
 
   return (
     <>
-    <form onSubmit={submit}>
+    <h2>Mint Here</h2>
+    <form onSubmit={submit} className="mint-form">
       {/* <input name="address" placeholder="0xA0Cf…251e" required /> */}
-      <input name="tokenURI" placeholder="imageIPFS" required />
+      <input name="tokenURI" placeholder="imageIPFS" required className="mint-input"/>
       <button type="submit" disabled={isPending} >{isPending ? 'Confirming...' : 'Mint'}</button>
       {hash && <div>Transaction Hash: {hash}</div>}
       {isConfirming && <div>Waiting for confirmation...</div>} 
