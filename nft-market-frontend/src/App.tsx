@@ -4,7 +4,7 @@ import { MintERC20 } from './MintERC20';
 import './index.css';
 
 function App() {
-  const CONTRACT_ADDRESS = "0x85FAD331426db7fdb82E4EAdE05Bae889fC44695";
+  const CONTRACT_ADDRESS = "0x3E445ba7bbdAdfD639660B373E7dF0AC987181a3";
   const TOKEN_CONTRACT_ADDRESS = "0x49fBFE1517b34D9eFd01F9e37A9400B2e00AA376"
 
   const account = useAccount()
