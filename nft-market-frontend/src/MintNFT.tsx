@@ -1,4 +1,4 @@
-import abi from './ContractABI.json';
+import abi from './ContractABI_V2.json';
 import * as React from 'react'
 import { type BaseError, useWaitForTransactionReceipt, useWriteContract } from 'wagmi' 
 import { DisplayNFTs } from './DisplayNFTs';
@@ -9,18 +9,20 @@ interface Props {
 }
 
 export function MintNFT( {address, contractAddress}:Props ) {
+  
   const { data: hash, error, isPending, writeContract } = useWriteContract() 
-
+  
   async function submit(e: React.FormEvent<HTMLFormElement>) { 
     e.preventDefault() 
     const formData = new FormData(e.target as HTMLFormElement) 
-    const tokenURI = formData.get('tokenURI') as string 
+    const tokenURI = formData.get('tokenURI') as string
+    const price = formData.get('price') as string; // 获取价格输入 
     
     writeContract({ 
       address: contractAddress, 
       abi, 
       functionName: 'createToken', 
-      args: [tokenURI], 
+      args: [tokenURI, price], 
     }) 
   } 
 
@@ -34,8 +36,9 @@ export function MintNFT( {address, contractAddress}:Props ) {
     <h2>Mint Here</h2>
     <form onSubmit={submit} className="mint-form">
       {/* <input name="address" placeholder="0xA0Cf…251e" required /> */}
-      <input name="tokenURI" placeholder="imageIPFS" required className="mint-input"/>
-      <button type="submit" disabled={isPending} >{isPending ? 'Confirming...' : 'Mint'}</button>
+      <input name="tokenURI" placeholder="Enter image IPFS URL" required className="mint-input"/>
+      <input name="price" placeholder="Enter NFT Price in Tokens" required className="mint-input" type="number" min="0"/>
+      <button type="submit" disabled={isPending} >{isPending ? 'Confirming...' : 'Mint NFT'}</button>
       {hash && <div>Transaction Hash: {hash}</div>}
       {isConfirming && <div>Waiting for confirmation...</div>} 
       {isConfirmed && <div>Transaction confirmed.</div>} 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { DisplayNFTPrice } from './DisplayNFTPrice';
 
 interface Props {
     address: `0x${string}`;
@@ -40,7 +41,6 @@ export function DisplayNFTs({ address, contractAddress, isConfirmed }: Props) { 
                     tokenUri: data.tokenUri
                 }));
                 setNfts(nftData);
-                console.log(response)
             })
             .catch(err => console.error(err));
     }
@@ -51,11 +51,12 @@ export function DisplayNFTs({ address, contractAddress, isConfirmed }: Props) { 
         <div className='nft-gallery'>
         {nfts.length > 0 ? (
             nfts.map((nft) => (
-            <div className="nft">
+            <div className="nft" key={nft.tokenId} >
                 <div className='nft-img'>
-                    <img key={nft.tokenId} src={nft.tokenUri}/>
+                    <img src={nft.tokenUri}/>
                 </div>
                 <div className='nft-name'>{`NFT ${nft.tokenId}`}</div>
+                <DisplayNFTPrice tokenId={nft.tokenId} contractAddress={contractAddress}/>
             </div>
             ))
         ) : (
