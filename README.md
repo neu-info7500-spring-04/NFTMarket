@@ -6,7 +6,7 @@
 - Bote Wang
 
 ## IPFS URL
-https://ipfs.io/ipfs/QmQq1seSuUWQdEkaVLMgYCm7qmZYZiD6z9hSj3oSpUT59i
+https://ipfs.io/ipfs/QmbsehvYSqiHV79gVyfXbJruEiKAEPytjbq19kEhSGcKYE
 
 ### Contract Repo
 https://github.com/neu-info7500-spring-04/MyNFTContract
