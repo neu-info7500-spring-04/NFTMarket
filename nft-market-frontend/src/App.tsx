@@ -5,6 +5,7 @@ import { MintNFT } from './MintNFT';
 import { MintERC20 } from './MintERC20';
 import './index.css';
 import { useState } from 'react';
+import { DisplayMarket } from './DisplayMarket';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -62,7 +63,7 @@ function App() {
           <Tab label="Personal Page" />
         </Tabs>
         <TabPanel value={value} index={0}>
-          here
+          <DisplayMarket contractAddress={CONTRACT_ADDRESS}></DisplayMarket>
         </TabPanel>
         <TabPanel value={value} index={1}>
         <div className="personal">
