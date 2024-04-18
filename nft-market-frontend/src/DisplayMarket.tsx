@@ -53,7 +53,7 @@ export function DisplayMarket({ contractAddress }: Props) {
                             <div className='nft-img'>
                                 <img src={nft.tokenUri} />
                             </div>
-                            <div className='nft-name'>{`NFT ${nft.tokenId}`}</div>
+                            <div className='nft-name'>{`${nft.name} #${nft.tokenId}`}</div>
                             <DisplayNFTPrice tokenId={nft.tokenId} contractAddress={contractAddress} />
                         </div>
                     ))
