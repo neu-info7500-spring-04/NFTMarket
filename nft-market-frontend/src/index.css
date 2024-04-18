@@ -102,11 +102,10 @@ h2 {
 .nft-gallery {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+  gap: 30px;
   border: 1px solid black;
   border-radius: 10px;
-  padding: 20px;
+  padding: 30px;
   background-color: white;
   color: #181818;
 
@@ -115,8 +114,9 @@ h2 {
 .nft {
   border: 0px;
   width: 200px;
-  height: 300px;
+  height: 250px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
+  margin-bottom: 30px;
 }
 
 .nft-img {
@@ -130,7 +130,7 @@ h2 {
 }
 
 .nft-name {
-  height: 80px;
+  height: 30px;
   padding: 10px;
   background-color: rgba(18, 18, 18, 0.04);
 }
@@ -138,4 +138,13 @@ h2 {
 .personal {
   width: 100%;
   padding: 0 10%;
+}
+
+.nft-buy-button {
+  width: 200px;
+  background-color: #1976d2;
+  margin-top: 5px;
+  border: 0px;
+  border-radius: 10px;
+  color: white;
 }
