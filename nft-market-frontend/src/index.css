@@ -39,6 +39,7 @@
 
 .main {
   padding: 100px 200px 80px 200px;
+  display: flex;
 }
 
 button {
@@ -132,4 +133,9 @@ h2 {
   height: 80px;
   padding: 10px;
   background-color: rgba(18, 18, 18, 0.04);
+}
+
+.personal {
+  width: 100%;
+  padding: 0 10%;
 }
