@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { DisplayNFTPrice } from './DisplayNFTPrice';
 
 interface Props {
     address: `0x${string}`;

@@ -49,7 +49,6 @@ export function DisplayNFTPrice({
 	});
 	const { vertical, horizontal, open } = state;
 	const [errorMessage, SetErrorMessage] = useState("");
-	const [tempOwner, setTempOwner] = useState("");
 
 
 	// 確保 price 是一個字符串
