@@ -3,6 +3,7 @@ import { DisplayNFTPrice } from './DisplayNFTPrice';
 
 interface Props {
     contractAddress: `0x${string}`;
+    buyerAddress: `0x${string}`;
 }
 
 interface Data {
@@ -21,7 +22,7 @@ interface NFT {
     tokenUri: string;
 }
 
-export function DisplayMarket({ contractAddress }: Props) {
+export function DisplayMarket({ contractAddress, buyerAddress}: Props) {
     const options = { method: 'GET', headers: { accept: 'application/json' } };
     const ALCHEMY_API = import.meta.env.VITE_ALCHEMY_API;
     const [nfts, setNfts] = useState<NFT[]>([]);
@@ -54,7 +55,7 @@ export function DisplayMarket({ contractAddress }: Props) {
                                 <img src={nft.tokenUri} />
                             </div>
                             <div className='nft-name'>{`${nft.name} #${nft.tokenId}`}</div>
-                            <DisplayNFTPrice tokenId={nft.tokenId} contractAddress={contractAddress} />
+                            <DisplayNFTPrice tokenId={nft.tokenId} contractAddress={contractAddress} buyerAddress={buyerAddress} />
                         </div>
                     ))
                 ) : (

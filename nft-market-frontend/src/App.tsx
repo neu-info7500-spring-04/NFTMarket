@@ -63,7 +63,7 @@ function App() {
           <Tab label="Personal Page" />
         </Tabs>
         <TabPanel value={value} index={0}>
-          <DisplayMarket contractAddress={CONTRACT_ADDRESS}></DisplayMarket>
+          <DisplayMarket contractAddress={CONTRACT_ADDRESS} buyerAddress={account.address}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
         <div className="personal">
