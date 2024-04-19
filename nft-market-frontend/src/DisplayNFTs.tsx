@@ -56,7 +56,6 @@ export function DisplayNFTs({ address, contractAddress, isConfirmed }: Props) { 
                     <img src={nft.tokenUri}/>
                 </div>
                 <div className='nft-name'>{`NFT ${nft.tokenId}`}</div>
-                <DisplayNFTPrice tokenId={nft.tokenId} contractAddress={contractAddress} buyerAddress={address}/>
             </div>
             ))
         ) : (
