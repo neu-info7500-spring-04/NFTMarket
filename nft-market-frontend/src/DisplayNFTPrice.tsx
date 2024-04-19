@@ -1,5 +1,4 @@
 import {
-	type BaseError,
 	useReadContract,
 	useWaitForTransactionReceipt,
 	useWriteContract,
@@ -7,6 +6,8 @@ import {
 import abi from "./ContractABI_V2.json";
 import erc20abi from "./ERC20ABI.json";
 import { useEffect, useState } from "react";
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import React from "react";
 const TOKEN_CONTRACT_ADDRESS = "0x49fBFE1517b34D9eFd01F9e37A9400B2e00AA376";
 
 interface Props {
@@ -14,6 +15,10 @@ interface Props {
 	contractAddress: `0x${string}`;
 	buyerAddress?: `0x${string}`;
 }
+
+interface State extends SnackbarOrigin {
+	open: boolean;
+  }
 
 export function DisplayNFTPrice({
 	tokenId,
@@ -35,7 +40,17 @@ export function DisplayNFTPrice({
 
 	// if is sold
 	const [isSold, setIsSold] = useState(false);
-	
+
+	// error alert
+	const [state, setState] = React.useState<State>({
+		open: false,
+		vertical: 'top',
+		horizontal: 'center',
+	  });
+	const { vertical, horizontal, open } = state;
+	const [errorMessage, SetErrorMessage] = useState("");
+	const [tempOwner, setTempOwner] = useState("");
+
 
 	// 確保 price 是一個字符串
 	const displayPrice =
@@ -48,8 +63,6 @@ export function DisplayNFTPrice({
 
 	const {
 		data: hash,
-		error: writeError,
-		isPending: isWritePending,
 		writeContract,
 	} = useWriteContract();
 
@@ -70,8 +83,29 @@ export function DisplayNFTPrice({
 		});
 	};
 
-	const buyNFT = () => {
-		approve();
+	const buyNFT = async () => {
+		await fetchNFTOwner();
+		console.log(tempOwner);
+		console.log(buyerAddress);
+		console.log(tempOwner === buyerAddress);
+		if (tempOwner !== buyerAddress) {
+			approve();
+		} else {
+			setState({
+				open: true,
+				vertical: 'top',
+				horizontal: 'center'
+			});
+			SetErrorMessage("It's your NFT!!!");
+		}
+	}
+
+	const handleClose = () => {
+		setState({
+			open: false,
+			vertical: 'top',
+			horizontal: 'center'
+		});
 	}
 
 	// confirm approval
@@ -81,7 +115,7 @@ export function DisplayNFTPrice({
 		});
 
 	useEffect(() => {
-		if(isSold) {
+		if (isSold) {
 		} else {
 			if (isConfirmed) {
 				transfer();
@@ -89,6 +123,20 @@ export function DisplayNFTPrice({
 			}
 		}
 	}, [isConfirmed]);
+
+	// check owner
+	const options = { method: 'GET', headers: { accept: 'application/json' } };
+	const ALCHEMY_API = import.meta.env.VITE_ALCHEMY_API;
+
+	async function fetchNFTOwner() {
+		await fetch(`https://eth-sepolia.g.alchemy.com/nft/v3/${ALCHEMY_API}/getOwnersForNFT?contractAddress=${contractAddress}&tokenId=${tokenId}`, options)
+			.then(response => response.json())
+			.then(response => {
+				console.log(response.owners);
+				setTempOwner(response.owners[0]);
+			})
+			.catch(err => console.error(err));
+	}
 
 	return (
 		<>
@@ -106,11 +154,14 @@ export function DisplayNFTPrice({
 				</button>
 			)}
 
-			{writeError && (
-				<div>
-					Error: {(writeError as BaseError).shortMessage || writeError.message}
-				</div>
-			)}
+			{open && <Snackbar
+				anchorOrigin={{ vertical, horizontal}}
+				open={open}
+				onClose={handleClose}
+				autoHideDuration={3000}
+				message={errorMessage}
+				key={vertical + horizontal}
+			/>}
 		</>
 	);
 }
