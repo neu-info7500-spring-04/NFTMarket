@@ -1,5 +1,6 @@
-import { useReadContract } from 'wagmi'
+import { useReadContract } from 'wagmi';
 import abi from './ContractABI_V2.json';
+import { type BaseError, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
 interface Props {
     tokenId: string;
@@ -28,12 +29,31 @@ export function DisplayNFTPrice({ tokenId, contractAddress }: Props) {
             </div>
         )
 
+    const { data: hash, error: writeError, isPending: isWritePending, writeContract } = useWriteContract();
+
+    const buyNFT = async () => {
+        writeContract({
+            address: contractAddress,
+            abi,
+            functionName: 'buyToken',
+            args: [tokenId],
+        })
+    }
+
+    const { isLoading: isConfirming, isSuccess: isConfirmed } =
+        useWaitForTransactionReceipt({
+            hash,
+        })
+
     return (
         <>
             {isPending ? (
                 <button className='nft-buy-button' disabled>Loading... | Buy</button>
             ) : (
-                <button className='nft-buy-button'>{`${displayPrice} | Buy`}</button>
+                <button className='nft-buy-button' onClick={buyNFT}>{`${displayPrice} | Buy`}</button>
+            )}
+            {writeError && (
+                <div>Error: {(writeError as BaseError).shortMessage || writeError.message}</div>
             )}
         </>
 
