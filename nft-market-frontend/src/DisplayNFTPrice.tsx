@@ -18,7 +18,7 @@ interface Props {
 
 interface State extends SnackbarOrigin {
 	open: boolean;
-  }
+}
 
 export function DisplayNFTPrice({
 	tokenId,
@@ -46,7 +46,7 @@ export function DisplayNFTPrice({
 		open: false,
 		vertical: 'top',
 		horizontal: 'center',
-	  });
+	});
 	const { vertical, horizontal, open } = state;
 	const [errorMessage, SetErrorMessage] = useState("");
 	const [tempOwner, setTempOwner] = useState("");
@@ -84,11 +84,8 @@ export function DisplayNFTPrice({
 	};
 
 	const buyNFT = async () => {
-		await fetchNFTOwner();
-		console.log(tempOwner);
-		console.log(buyerAddress);
-		console.log(tempOwner === buyerAddress);
-		if (tempOwner !== buyerAddress) {
+		const data = await fetchNFTOwner();
+		if (data.owners[0] !== buyerAddress) {
 			approve();
 		} else {
 			setState({
@@ -129,13 +126,16 @@ export function DisplayNFTPrice({
 	const ALCHEMY_API = import.meta.env.VITE_ALCHEMY_API;
 
 	async function fetchNFTOwner() {
-		await fetch(`https://eth-sepolia.g.alchemy.com/nft/v3/${ALCHEMY_API}/getOwnersForNFT?contractAddress=${contractAddress}&tokenId=${tokenId}`, options)
-			.then(response => response.json())
-			.then(response => {
-				console.log(response.owners);
-				setTempOwner(response.owners[0]);
-			})
-			.catch(err => console.error(err));
+		try {
+			const response = await fetch(`https://eth-sepolia.g.alchemy.com/nft/v3/${ALCHEMY_API}/getOwnersForNFT?contractAddress=${contractAddress}&tokenId=${tokenId}`, options);
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			const data = await response.json();
+			return data;
+		} catch (error) {
+			console.error('There was a problem with your fetch operation:', error);
+		}
 	}
 
 	return (
@@ -144,24 +144,29 @@ export function DisplayNFTPrice({
 				<button className="nft-buy-button" disabled>
 					Loading... | Buy
 				</button>
-			) : (
-				<button className="nft-buy-button" onClick={buyNFT}>
-					{isConfirming
-						? "Confirming..."
-						: isConfirmed
-							? "Confirmed"
-							: `${displayPrice} | Buy`}
-				</button>
-			)}
+			) :
+				displayPrice === '0 USDC' ? (<button className="nft-buy-button" disabled>
+					Not for sale
+				</button>) : (<button className="nft-buy-button" onClick={buyNFT}>
+					{
+						isConfirming
+							? "Confirming..."
+							: isConfirmed
+								? "Confirmed"
+								: `${displayPrice} | Buy`}
+				</button >)
+			}
 
-			{open && <Snackbar
-				anchorOrigin={{ vertical, horizontal}}
-				open={open}
-				onClose={handleClose}
-				autoHideDuration={3000}
-				message={errorMessage}
-				key={vertical + horizontal}
-			/>}
+			{
+				open && <Snackbar
+					anchorOrigin={{ vertical, horizontal }}
+					open={open}
+					onClose={handleClose}
+					autoHideDuration={3000}
+					message={errorMessage}
+					key={vertical + horizontal}
+				/>
+			}
 		</>
 	);
 }
