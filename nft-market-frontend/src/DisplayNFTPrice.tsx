@@ -6,6 +6,7 @@ import {
 } from "wagmi";
 import abi from "./ContractABI_V2.json";
 import erc20abi from "./ERC20ABI.json";
+import { useEffect, useState } from "react";
 const TOKEN_CONTRACT_ADDRESS = "0x49fBFE1517b34D9eFd01F9e37A9400B2e00AA376";
 
 interface Props {
@@ -31,9 +32,15 @@ export function DisplayNFTPrice({
 	});
 	console.log(tokenId);
 	console.log(price, typeof price);
+
+	// if is sold
+	const [isSold, setIsSold] = useState(false);
+	
+
 	// 確保 price 是一個字符串
 	const displayPrice =
 		typeof price === "bigint" ? `${price.toString()} USDC` : "Not for sale";
+	const approvePrice = typeof price === "bigint" ? `${(price + 20n).toString()}000000000000000000` : "";
 
 	// if (isPending) return <div>Loading...</div>;
 
@@ -46,14 +53,15 @@ export function DisplayNFTPrice({
 		writeContract,
 	} = useWriteContract();
 
-	const buyNFT = async () => {
+	const approve = () => {
 		writeContract({
 			address: TOKEN_CONTRACT_ADDRESS,
 			abi: erc20abi,
 			functionName: "approve",
-			args: [buyerAddress, price],
+			args: [contractAddress, approvePrice],
 		});
-
+	}
+	const transfer = () => {
 		writeContract({
 			address: contractAddress,
 			abi,
@@ -62,10 +70,25 @@ export function DisplayNFTPrice({
 		});
 	};
 
+	const buyNFT = () => {
+		approve();
+	}
+
+	// confirm approval
 	const { isLoading: isConfirming, isSuccess: isConfirmed } =
 		useWaitForTransactionReceipt({
 			hash,
 		});
+
+	useEffect(() => {
+		if(isSold) {
+		} else {
+			if (isConfirmed) {
+				transfer();
+				setIsSold(true);
+			}
+		}
+	}, [isConfirmed]);
 
 	return (
 		<>
